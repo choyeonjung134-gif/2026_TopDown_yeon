@@ -6,6 +6,11 @@ TagManager:
   tags:
   - BackGround
   - Defauit
+  - Undefined
+  - Daisy
+  - Dandelion
+  - Lilac
+  - Nemophila
   layers:
   - Default
   - TransparentFX
