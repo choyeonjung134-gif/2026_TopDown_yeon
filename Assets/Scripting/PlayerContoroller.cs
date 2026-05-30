@@ -33,12 +33,18 @@ public class PlayerController : MonoBehaviour
     public bool isMagnetActive = false; // 자석 활성화 여부
     public bool hasShield = false;      // 보호막 활성화 여부
 
+    [Header("체력 설정")]
+    public int maxHp = 5;       // 최대 체력
+    public int currentHp;       // 현재 체력
+
     private Vector3 originalScale; // 원래 크기를 저장할 변수
 
     private Coroutine daisyCoroutine;
     private Coroutine lilacCoroutine;
     private Coroutine dandelionCoroutine;
     private Coroutine nemophilaCoroutine;
+
+    private Vector3 startPosition; // 처음 시작 위치를 기억할 변수
 
     private void Awake()
     {
@@ -94,13 +100,6 @@ public class PlayerController : MonoBehaviour
             sr.sprite = currentSprites[frameIndex];
         }
 
-        // (기존에 작성하신 병아리 이동 및 방향 전환 코드가 여기에 들어갑니다!)
-
-        // 만약 자석이 켜져있다면 주변 꽃을 끌어당깁니다.
-        if (isMagnetActive)
-        {
-            HandleMagnetEffect();
-        }
     }
 
     private void FixedUpdate()
@@ -123,6 +122,11 @@ public class PlayerController : MonoBehaviour
         // 게임 시작 시 원래 속도와 원래 크기를 기억해 둡니다.
         originalSpeed = moveSpeed;
         originalScale = transform.localScale;
+
+        currentHp = maxHp; // 게임 시작할 때 체력을 5로 가득 채웁니다.
+
+        // 게임이 시작될 때 병아리의 첫 위치(좌표)를 콕 저장해 둡니다.
+        startPosition = transform.position;
     }
 
     
@@ -218,35 +222,69 @@ public class PlayerController : MonoBehaviour
     // 추가 기능 구현 함수들
     // ==========================================
 
-    // 라일락 자석 효과 기능
-    void HandleMagnetEffect()
+    
+   
+
+    // 벌이나 장애물에 부딪혔을 때 호출할 데미지 함수 예시
+    //  이것만 남겨두세요!
+    public void TakeDamage()
     {
-        // 주변 3유니티 반경 안에 있는 모든 꽃(Flower)들을 찾습니다.
-        Collider2D[] flowers = Physics2D.OverlapCircleAll(transform.position, 3f);
-        foreach (Collider2D col in flowers)
+        // 만약 네모필라 보호막(Shield)이 켜져 있다면?
+        if (hasShield)
         {
-            // ⭐ [여기 수정] col.gameObject == gameObject (자기자신) 이 아닐 때만 끌어당기도록 조건을 추가합니다!
-            if (col.gameObject != gameObject && (col.CompareTag("Flower") || col.GetComponent<Flower>() != null))
-            {
-                // 꽃만 내 쪽(병아리 쪽)으로 슬며시 끌어당깁니다.
-                col.transform.position = Vector3.MoveTowards(col.transform.position, transform.position, Time.deltaTime * 5f);
-            }
+            hasShield = false; // 보호막이 대신 깨지고 데미지를 무효화합니다!
+            if (nemophilaCoroutine != null) StopCoroutine(nemophilaCoroutine);
+            Debug.Log("보호막이 깨져서 병아리가 살았습니다! 체력 유지: " + currentHp);
+            return;
+        }
+
+        // 보호막이 없다면 실제로 체력을 1 깎습니다.
+        currentHp--;
+        Debug.Log(" 벌에게 쏘였습니다! 남은 체력: " + currentHp);
+
+        // 체력이 0 이하가 되면 죽습니다.
+        if (currentHp <= 0)
+        {
+            Die();
         }
     }
 
-    // 벌이나 장애물에 부딪혔을 때 호출할 데미지 함수 예시
-    public void TakeDamage()
+    // [수정된 코드] 벌과 '통과하며 충돌'했을 때를 감지합니다.
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (hasShield)
+        // 부딪힌 물체의 태그가 "Bee" 인지 확인
+        if (other.CompareTag("Bee"))
         {
-            hasShield = false; // 보호막이 대신 깨지고 데미지 무효화!
-            StopCoroutine("NemophilaRoutine"); // 타이머도 꺼줍니다.
-            Debug.Log("보호막이 깨져서 병아리가 살았습니다!");
-        }
-        else
-        {
-            Debug.Log("보호막이 없어 병아리가 아픕니다! HP 감소");
-            // 원래 받았어야 할 데미지 로직 처리 코드가 들어갈 자리
+            TakeDamage();
         }
     }
+
+    // 병아리가 죽었을 때 실행될 함수
+    void Die()
+    {
+        Debug.Log("5번 쏘였습니다... 꽃은 그대로 두고 시작 지점으로 돌아갑니다!");
+
+        // 1. 병아리 위치를 처음 시작 위치로 순간이동!
+        transform.position = startPosition;
+
+        // 2. 체력을 다시 최대(5)로 가득 채워줍니다.
+        currentHp = maxHp;
+
+        // 3. (선택) 만약 작아져 있거나(민들레), 속도가 빨라진(데이지) 상태였다면 원래대로 복구
+        moveSpeed = originalSpeed;
+        transform.localScale = originalScale;
+        hasShield = false;
+        isMagnetActive = false;
+
+        // 실행 중이던 모든 5초 버프 타이머들을 안전하게 다 꺼줍니다.
+        StopAllCoroutines();
+        daisyCoroutine = null;
+        lilacCoroutine = null;
+        dandelionCoroutine = null;
+        nemophilaCoroutine = null;
+
+        // 4. 병아리가 살아났음을 알림
+        gameObject.SetActive(true);
+        Debug.Log(" 병아리 부활! 현재 체력: " + currentHp);
     }
+}
