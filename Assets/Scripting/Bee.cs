@@ -20,22 +20,22 @@ public class Bee : MonoBehaviour
         }
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        // 쫓아갈 병아리가 존재한다면 타겟을 향해 이동합니다.
         if (playerTransform != null)
         {
             // 병아리가 있는 방향 벡터를 계산합니다.
             Vector3 direction = (playerTransform.position - transform.position).normalized;
 
-            // 그 방향으로 현재 속도만큼 매 프레임 이동합니다.
-            transform.position += direction * currentSpeed * Time.deltaTime;
+            // X 기존 코드 (순간이동 방식이라 충돌을 씹음)
+            // transform.position += direction * currentSpeed * Time.deltaTime;
 
-            // (선택) 벌이 쫓아가는 방향에 맞춰 좌우 이미지를 뒤집고 싶다면 아래 주석을 해제하세요!
-            /*
-            if (direction.x > 0) transform.localScale = new Vector3(-1f, 1f, 1f); // 오른쪽 볼 때
-            else if (direction.x < 0) transform.localScale = new Vector3(1f, 1f, 1f); // 왼쪽 볼 때
-            */
+            //  [새로운 코드] Rigidbody를 사용해 '물리적으로 밀면서' 직진시킵니다.
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.MovePosition(transform.position + direction * currentSpeed * Time.fixedDeltaTime);
+            }
         }
     }
 

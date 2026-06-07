@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 
 public class PlayerController : MonoBehaviour
@@ -36,6 +37,7 @@ public class PlayerController : MonoBehaviour
     [Header("체력 설정")]
     public int maxHp = 5;       // 최대 체력
     public int currentHp;       // 현재 체력
+    public Image[] heartImages;
 
     private Vector3 originalScale; // 원래 크기를 저장할 변수
 
@@ -229,20 +231,30 @@ public class PlayerController : MonoBehaviour
     //  이것만 남겨두세요!
     public void TakeDamage()
     {
-        // 만약 네모필라 보호막(Shield)이 켜져 있다면?
         if (hasShield)
         {
-            hasShield = false; // 보호막이 대신 깨지고 데미지를 무효화합니다!
+            hasShield = false;
             if (nemophilaCoroutine != null) StopCoroutine(nemophilaCoroutine);
-            Debug.Log("보호막이 깨져서 병아리가 살았습니다! 체력 유지: " + currentHp);
+            Debug.Log("보호막 소멸!");
             return;
         }
 
-        // 보호막이 없다면 실제로 체력을 1 깎습니다.
         currentHp--;
-        Debug.Log(" 벌에게 쏘였습니다! 남은 체력: " + currentHp);
+        //  하트가 왜 안 닳는지 범인을 잡기 위한 확인용 로그!
+        Debug.Log(" 벌에게 쏘임! 현재 남은 체력(HP): " + currentHp);
 
-        // 체력이 0 이하가 되면 죽습니다.
+        if (currentHp >= 0 && currentHp < heartImages.Length)
+        {
+            // 하트를 끄기 직전 정상 작동하는지 체크하는 로그!
+            Debug.Log("{currentHp}번째 하트를 비활성화(False) 합니다!");
+            heartImages[currentHp].gameObject.SetActive(false);
+        }
+        else
+        {
+            //  만약 하트 배열이 비어있다면 여기에 로그가 찍힙니다!
+            Debug.LogWarning("경고: heartImages 배열에 하트가 제대로 등록되지 않았거나 인덱스 범위를 벗어났습니다!");
+        }
+
         if (currentHp <= 0)
         {
             Die();
@@ -255,6 +267,7 @@ public class PlayerController : MonoBehaviour
         // 부딪힌 물체의 태그가 "Bee" 인지 확인
         if (other.CompareTag("Bee"))
         {
+            Debug.Log("[트리거 감지] 벌이 병아리 몸을 통과함! TakeDamage 호출합니다.");
             TakeDamage();
         }
     }
@@ -269,6 +282,11 @@ public class PlayerController : MonoBehaviour
 
         // 2. 체력을 다시 최대(5)로 가득 채워줍니다.
         currentHp = maxHp;
+
+        foreach (Image heart in heartImages)
+        {
+            if (heart != null) heart.gameObject.SetActive(true);
+        }
 
         // 3. (선택) 만약 작아져 있거나(민들레), 속도가 빨라진(데이지) 상태였다면 원래대로 복구
         moveSpeed = originalSpeed;
