@@ -404,7 +404,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 7
+  m_Constraints: 4
 --- !u!61 &32254486
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -651,7 +651,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 7
+  m_Constraints: 4
 --- !u!61 &63474532
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1514,7 +1514,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 7
+  m_Constraints: 4
 --- !u!61 &448676905
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1846,7 +1846,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 7
+  m_Constraints: 4
 --- !u!61 &490511861
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2371,7 +2371,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 000000004d81b422
+  m_ApplyToSortingLayers: 000000004d81b42267f73266
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -3161,7 +3161,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 7
+  m_Constraints: 4
 --- !u!61 &837317384
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -170601,7 +170601,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 7
+  m_Constraints: 4
 --- !u!61 &1409878211
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -170870,7 +170870,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 519420031}
-  m_PlaneDistance: 100
+  m_PlaneDistance: 1
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -170879,7 +170879,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: 1714616167
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &1463804740
@@ -171035,7 +171035,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 7
+  m_Constraints: 4
 --- !u!61 &1543430371
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -171798,7 +171798,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 7
+  m_Constraints: 4
 --- !u!61 &1909100051
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -171946,7 +171946,7 @@ MonoBehaviour:
   isMagnetActive: 0
   hasShield: 0
   maxHp: 5
-  currentHp: 0
+  currentHp: 5
   heartImages:
   - {fileID: 2031744444}
   - {fileID: 69983024}
@@ -172221,7 +172221,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 7
+  m_Constraints: 4
 --- !u!61 &2000741061
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -172628,7 +172628,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 7
+  m_Constraints: 4
 --- !u!61 &2061653456
 BoxCollider2D:
   m_ObjectHideFlags: 0

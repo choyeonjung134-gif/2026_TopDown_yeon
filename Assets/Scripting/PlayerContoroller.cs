@@ -224,11 +224,23 @@ public class PlayerController : MonoBehaviour
     // 추가 기능 구현 함수들
     // ==========================================
 
-    
-   
 
-    // 벌이나 장애물에 부딪혔을 때 호출할 데미지 함수 예시
-    //  이것만 남겨두세요!
+
+
+    // ==========================================
+    //  충돌 감지 및 데미지 시스템 
+    // ==========================================
+
+    // 기존의 OnCollisionEnter2D나 다른 OnTriggerEnter2D가 있다면 지우고 이것 하나만 남겨주세요!
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Bee"))
+        {
+            Debug.Log("[트리거 감지] 벌이 병아리 몸을 통과함!");
+            TakeDamage();
+        }
+    }
+
     public void TakeDamage()
     {
         if (hasShield)
@@ -239,36 +251,25 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        currentHp--;
-        //  하트가 왜 안 닳는지 범인을 잡기 위한 확인용 로그!
-        Debug.Log(" 벌에게 쏘임! 현재 남은 체력(HP): " + currentHp);
+        // ⭐ 안전장치: 현재 체력이 이미 0 이하 라면 더 이상 깎지 않고 함수를 종료합니다.
+        if (currentHp <= 0) return;
 
-        if (currentHp >= 0 && currentHp < heartImages.Length)
+        // 체력을 깎기 전에 "현재 체력 - 1" 위치의 하트를 먼저 끕니다. (예: HP 5 -> 4가 될 때 4번째 하트 꺼짐)
+        int targetHeartIndex = currentHp - 1;
+
+        if (targetHeartIndex >= 0 && targetHeartIndex < heartImages.Length)
         {
-            // 하트를 끄기 직전 정상 작동하는지 체크하는 로그!
-            Debug.Log("{currentHp}번째 하트를 비활성화(False) 합니다!");
-            heartImages[currentHp].gameObject.SetActive(false);
+            Debug.Log("{targetHeartIndex}번째 하트를 끕니다.");
+            heartImages[targetHeartIndex].gameObject.SetActive(false);
         }
-        else
-        {
-            //  만약 하트 배열이 비어있다면 여기에 로그가 찍힙니다!
-            Debug.LogWarning("경고: heartImages 배열에 하트가 제대로 등록되지 않았거나 인덱스 범위를 벗어났습니다!");
-        }
+
+        // 그 후 실제로 체력을 감소시킵니다.
+        currentHp--;
+        Debug.Log("벌에게 쏘임! 현재 남은 체력(HP): " + currentHp);
 
         if (currentHp <= 0)
         {
             Die();
-        }
-    }
-
-    // [수정된 코드] 벌과 '통과하며 충돌'했을 때를 감지합니다.
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        // 부딪힌 물체의 태그가 "Bee" 인지 확인
-        if (other.CompareTag("Bee"))
-        {
-            Debug.Log("[트리거 감지] 벌이 병아리 몸을 통과함! TakeDamage 호출합니다.");
-            TakeDamage();
         }
     }
 
