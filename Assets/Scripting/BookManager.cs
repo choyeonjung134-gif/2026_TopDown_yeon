@@ -4,15 +4,22 @@ using UnityEngine.UI;
 public class BookManager : MonoBehaviour
 {
     [Header("도감 UI 패널")]
-    public GameObject bookPanel;       // 아까 만든 BookPanel을 연결할 곳
+    public GameObject bookPanel;
 
     [Header("연결할 게임 오브젝트들")]
-    public PlayerController player;    // 병아리 스크립트 연결
+    public PlayerController player;
+
+    // 💡 4개였던 칸을 지우고, 직관적인 3개의 부케 이미지 칸으로 변경합니다!
+    [Header("도감 내 꽃다발 이미지들 (회색이었다가 켜질 이미지들)")]
+    public Image bouquetImage1;
+    public Image bouquetImage2;
+    public Image bouquetImage3;
 
     // 꽃다발 3개를 각각 모았는지 체크하는 변수 (기본값은 false)
     [HideInInspector] public bool hasBouquet1 = false; // 목숨 +1
     [HideInInspector] public bool hasBouquet2 = false; // 벌 -2
     [HideInInspector] public bool hasBouquet3 = false; // 영구 속도 업
+
 
     void Start()
     {
@@ -58,6 +65,12 @@ public class BookManager : MonoBehaviour
         if (hasBouquet1) return; // 이미 해금했다면 패스
         hasBouquet1 = true;
 
+        if (bouquetImage1 != null)
+        {
+            bouquetImage1.color = Color.white; // 원래 색상으로 복구!
+            Debug.Log("부케 1호 도감 해금 완료!");
+        }
+
         player.maxHp = 6;       // 병아리의 최대 체력을 6으로 늘리고
         player.currentHp++;     // 현재 체력도 1 보너스로 채워줍니다!
         Debug.Log(" 1번 꽃다발 해금! 최대 목숨이 6으로 늘어났습니다.");
@@ -73,6 +86,12 @@ public class BookManager : MonoBehaviour
         GameObject[] bees = GameObject.FindGameObjectsWithTag("Bee");
         int deleteCount = Mathf.Min(2, bees.Length); // 벌이 2마리보다 적으면 있는 만큼만
 
+        if (bouquetImage2 != null)
+        {
+            bouquetImage2.color = Color.white;
+            Debug.Log("부케 2호 도감 해금 완료!");
+        }
+
         for (int i = 0; i < deleteCount; i++)
         {
             Destroy(bees[i]);
@@ -85,6 +104,13 @@ public class BookManager : MonoBehaviour
     {
         if (hasBouquet3) return;
         hasBouquet3 = true;
+
+        if (bouquetImage3 != null)
+        {
+            bouquetImage3.color = Color.white;
+            Debug.Log("부케 3호 도감 해금 완료!");
+        }
+        Debug.Log("라일락 및 네모필라 도감 색상 복구 완료!");
 
         player.moveSpeed += 1.5f;
 
