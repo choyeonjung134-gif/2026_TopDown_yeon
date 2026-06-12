@@ -21,6 +21,9 @@ public class PlayerController : MonoBehaviour
     private int frameIndex = 0;
     private float timer = 0f;
 
+    // 맞으면 색깔 바꾸기
+    private SpriteRenderer spriteRenderer;
+
     [Header("이동 설정")]
     private float originalSpeed; // 원래 속도를 저장할 변수
 
@@ -100,8 +103,23 @@ public class PlayerController : MonoBehaviour
             if (frameIndex >= currentSprites.Length)
                 frameIndex = 0;
             sr.sprite = currentSprites[frameIndex];
+
+
         }
 
+    }
+
+    // 1초 동안 빨갛게 변했다가 원래 색(흰색)으로 돌아오는 코루틴 함수입니다.
+    private System.Collections.IEnumerator HitColorRoutine()
+    {
+        // 1. 색상을 완전한 빨간색으로 변경
+        spriteRenderer.color = Color.red;
+
+        // 2. 1초 동안 이 상태로 대기 (교수님 요청 사항!)
+        yield return new WaitForSeconds(0.5f);
+
+        // 3. 다시 원래 본래의 색상(흰색)으로 복구
+        spriteRenderer.color = Color.white;
     }
 
     private void FixedUpdate()
@@ -129,9 +147,13 @@ public class PlayerController : MonoBehaviour
 
         // 게임이 시작될 때 병아리의 첫 위치(좌표)를 콕 저장해 둡니다.
         startPosition = transform.position;
+
+
+        // 색 바꾸기
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
-    
+
     public void CollectDaisy()
     {
         daisyCount++;
@@ -232,12 +254,17 @@ public class PlayerController : MonoBehaviour
     // ==========================================
 
     // 기존의 OnCollisionEnter2D나 다른 OnTriggerEnter2D가 있다면 지우고 이것 하나만 남겨주세요!
+    // 257번째 줄부터 270번째 줄까지 이 코드로 통째로 바꾸세요!
     private void OnTriggerEnter2D(Collider2D other)
     {
+        // 1. 벌("Bee") 태그를 가진 물체와 부딪혔을 때만 작동!
         if (other.CompareTag("Bee"))
         {
             Debug.Log("[트리거 감지] 벌이 병아리 몸을 통과함!");
             TakeDamage();
+
+            // ★ 매개변수 이름을 other로 맞춰서 벌에 맞았을 때만 빨갛게 만듭니다!
+            StartCoroutine(HitColorRoutine());
         }
     }
 
