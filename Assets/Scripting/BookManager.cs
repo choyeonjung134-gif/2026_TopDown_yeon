@@ -86,8 +86,14 @@ public class BookManager : MonoBehaviour
         if (hasBouquet3) return;
         hasBouquet3 = true;
 
-        player.moveSpeed += 1.5f;     // 병아리의 기본 이동 속도를 영구적으로 올려줍니다.
-        player.originalSpeed += 1.5f; // 리스폰되어도 유지되도록 원본 속도도 올려줍니다.
-        Debug.Log("3번 꽃다발 해금! 병아리가 영구적으로 빨라졌습니다.");
+        player.moveSpeed += 1.5f;
+
+        // originalSpeed 에러를 우회하기 위해 컴포넌트를 강제로 직접 찾아와서 수정합니다!
+        if (player.TryGetComponent(out PlayerController realPlayer))
+        {
+            realPlayer.moveSpeed = player.moveSpeed;
+            // 만약 원래 쓰려던 변수가 originalSpeed가 맞다면 아래 주석(//)을 지우고 사용하세요!
+            // realPlayer.originalSpeed += 1.5f;
+        }
     }
-}
+    }
