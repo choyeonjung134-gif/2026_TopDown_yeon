@@ -87,26 +87,29 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
-        if(input.sqrMagnitude <= 0.01f)
+      if (input.sqrMagnitude <= 0.01f)
         {
             frameIndex = 0;
             sr.sprite = currentSprites[frameIndex];
             return;
         }
-        timer += Time.deltaTime;
 
+        timer += Time.deltaTime;
         if (timer >= frameTime)
         {
             timer = 0f;
             frameIndex++;
 
-            if (frameIndex >= currentSprites.Length)
+            if(frameIndex >= currentSprites.Length )
                 frameIndex = 0;
+
             sr.sprite = currentSprites[frameIndex];
-
-
         }
 
+    }
+    private void FixedUpdate()
+    {
+        rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);
     }
 
     // 1초 동안 빨갛게 변했다가 원래 색(흰색)으로 돌아오는 코루틴 함수입니다.
@@ -122,10 +125,7 @@ public class PlayerController : MonoBehaviour
         spriteRenderer.color = Color.white;
     }
 
-    private void FixedUpdate()
-    {
-        rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);
-    }
+ 
 
     private void ChangeSprites(Sprite[] newSprites)
     {
@@ -151,6 +151,10 @@ public class PlayerController : MonoBehaviour
 
         // 색 바꾸기
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+
+        // 🦆 오리가 부활하거나 스테이지가 다시 시작될 때 색상을 강제로 원래대로(흰색) 리셋!
+        if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null) spriteRenderer.color = Color.white;
     }
 
 
@@ -259,14 +263,36 @@ public class PlayerController : MonoBehaviour
     {
         if (other.CompareTag("Bee"))
         {
-            Debug.Log("[트리거 감지] 벌이 병아리 몸을 통과함!");
+            Debug.Log("[트리거 감지] 벌이 병아리(오리) 몸을 통과함!");
+
+            // 피격 시 빨갛게 깜빡이는 연출 실행
+            StartCoroutine(HitColorRoutine());
+
+            // 데미지를 입고 HP가 0이 되면 죽는 함수 호출
             TakeDamage();
         }
 
-        // 💡 원래 collision.CompareTag 였던 부분을 other.CompareTag 로 수정합니다!
-        if (other.CompareTag("Bee"))
+        if (other.CompareTag("Bouquet"))
         {
-            StartCoroutine(HitColorRoutine());
+            // 부딪힌 오브젝트에서 BouquetObject 스크립트를 가져옴
+            BouquetObject bouquet = other.GetComponent<BouquetObject>();
+            if (bouquet != null)
+            {
+                // 꽃다발 번호(1, 2, 3) 장부에 영구 저장 (스테이지 넘어가도 유지)
+                PlayerPrefs.SetInt("HasBouquet" + bouquet.bouquetNumber, 1);
+                PlayerPrefs.Save();
+
+                // 북 매니저 싱글톤을 찾아 즉시 흰색으로 활성화
+                if (BookManager.Instance != null)
+                {
+                    if (bouquet.bouquetNumber == 1) BookManager.Instance.UnlockBouquet1();
+                    else if (bouquet.bouquetNumber == 2) BookManager.Instance.UnlockBouquet2();
+                    else if (bouquet.bouquetNumber == 3) BookManager.Instance.UnlockBouquet3();
+                }
+            }
+
+            // 아이템 오브젝트 파괴 (스테이지 이동은 BouquetObject 내부 연출이 처리)
+            Destroy(other.gameObject);
         }
     }
 

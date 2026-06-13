@@ -20,6 +20,8 @@ public class BookManager : MonoBehaviour
     [HideInInspector] public bool hasBouquet2 = false; // 벌 -2
     [HideInInspector] public bool hasBouquet3 = false; // 영구 속도 업
 
+   
+
     // 스킬이 해금되었는지 기억할 비밀 장부 (true가 되면 스킬 사용 가능!)
     [Header("스킬 해금 여부 상태")]
     public bool isSkill1Unlocked = false;
@@ -28,11 +30,18 @@ public class BookManager : MonoBehaviour
 
     public static BookManager Instance { get; private set; }
 
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     void Start()
     {
-        // 💡 게임 시작 시 도감 패널을 닫고, 게임 시간을 정상(1배속)으로 켭니다!
         if (bookPanel != null) bookPanel.SetActive(false);
-        Time.timeScale = 1f; // ★ 이 줄을 꼭 추가해 주세요!
+
+        // 💐 [핵심] 스테이지 2 등 다음 씬으로 넘어갔을 때, 
+        // 스테이지 1에서 저장했던 부케 획득 장부(PlayerPrefs)를 확인해서 복구합니다.
+        RefreshBouquetUI();
     }
 
     // ==========================================
@@ -41,19 +50,7 @@ public class BookManager : MonoBehaviour
 
     // 도감 열기 버튼에 연결할 함수
 
-    private void Awake()
-    {
-        // 씬이 전환되어도 BookManager가 새로 생성되어 데이터가 날아가는 것을 방지합니다.
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); // ★ 핵심: 다음 스테이지로 가도 이 오브젝트는 살아남음!
-        }
-        else
-        {
-            Destroy(gameObject); // 이미 존재한다면 중복 생성을 막기 위해 파괴
-        }
-    }
+    
     void Update()
     {
         // 💡 매 프레임마다 플레이어가 숫자키를 누르는지 감시합니다!
@@ -64,8 +61,10 @@ public class BookManager : MonoBehaviour
     {
         if (bookPanel != null)
         {
-            bookPanel.SetActive(true); // 도감 화면 켜기
-            Time.timeScale = 0f;       // 게임 일시정지
+            bookPanel.SetActive(true);
+            Time.timeScale = 0f; // 게임 일시정지
+            RefreshBouquetUI();  // 도감 열 때마다 최신 데이터로 UI 새로고침
+            Debug.Log("도감을 열었습니다.");
         }
        
     }
@@ -86,10 +85,10 @@ public class BookManager : MonoBehaviour
     {
         if (bookPanel != null)
         {
-            bookPanel.SetActive(false); // 도감 화면 끄기
-            Time.timeScale = 1f;        // ⭐ 유니티의 시간을 다시 1로 돌려서 게임을 원래대로 흐르게 합니다.
-            Debug.Log("도감을 닫았습니다. 게임 재개!");
-        }
+            bookPanel.SetActive(false);
+            Time.timeScale = 1f; // 게임 재개
+            Debug.Log("도감을 닫았습니다.");
+         }
     }
 
     // ==========================================
@@ -103,60 +102,84 @@ public class BookManager : MonoBehaviour
 
     // 2번 꽃다발 : 벌 2마리 줄이기
 
-    private void UseBouquetSkill(int skillNumber)
+    // 획득 장부를 검사해서 도감 이미지 색상과 스킬 잠금을 동기화하는 함수
+    public void RefreshBouquetUI()
     {
-        PlayerController player = FindObjectOfType<PlayerController>();
-        if (player == null) return;
+        // 1번 부케 체크
+        if (PlayerPrefs.GetInt("HasBouquet1", 0) == 1)
+        {
+            if (bouquetImage1 != null) bouquetImage1.color = Color.white; // 불 켜기 (기존 색)
+            isSkill1Unlocked = true;
+        }
+        else
+        {
+            if (bouquetImage1 != null) bouquetImage1.color = new Color(0.3f, 0.3f, 0.3f, 1f); // 회색
+            isSkill1Unlocked = false;
+        }
 
-        if (skillNumber == 1)
+        // 2번 부케 체크
+        if (PlayerPrefs.GetInt("HasBouquet2", 0) == 1)
         {
-            Debug.Log("💐 [부케 1번 스킬 발동!] 오리의 이동 속도가 3초간 빨라집니다!");
+            if (bouquetImage2 != null) bouquetImage2.color = Color.white;
+            isSkill2Unlocked = true;
         }
-        else if (skillNumber == 2)
+        else
         {
-            Debug.Log("🛡️ [부케 2번 스킬 발동!] 무적 보호막 생성!");
+            if (bouquetImage2 != null) bouquetImage2.color = new Color(0.3f, 0.3f, 0.3f, 1f);
+            isSkill2Unlocked = false;
         }
-        else if (skillNumber == 3)
+
+        // 3번 부케 체크
+        if (PlayerPrefs.GetInt("HasBouquet3", 0) == 1)
         {
-            Debug.Log("⚡ [부케 3번 스킬 발동!] 주변의 벌들을 모두 쫓아냅니다!");
+            if (bouquetImage3 != null) bouquetImage3.color = Color.white;
+            isSkill3Unlocked = true;
+        }
+        else
+        {
+            if (bouquetImage3 != null) bouquetImage3.color = new Color(0.3f, 0.3f, 0.3f, 1f);
+            isSkill3Unlocked = false;
         }
     }
 
-    // 기존의 중복되었던 1~3번 해금 함수들도 깔끔하게 딱 한 번만 아래처럼 새로 정의해 줍니다.
+    // 외부(BouquetObject 등)에서 부케를 먹었을 때 직접 원격 호출해 줄 함수들
     public void UnlockBouquet1()
     {
-        if (bouquetImage1 != null) bouquetImage1.color = Color.white;
-        isSkill1Unlocked = true;
+        PlayerPrefs.SetInt("HasBouquet1", 1);
+        PlayerPrefs.Save();
+        RefreshBouquetUI();
         Debug.Log("부케 1호 도감 해금 및 스킬1 활성화 완료!");
     }
 
     public void UnlockBouquet2()
     {
-        if (bouquetImage2 != null) bouquetImage2.color = Color.white;
-        isSkill2Unlocked = true;
+        PlayerPrefs.SetInt("HasBouquet2", 1);
+        PlayerPrefs.Save();
+        RefreshBouquetUI();
         Debug.Log("부케 2호 도감 해금 및 스킬2 활성화 완료!");
     }
 
     public void UnlockBouquet3()
     {
-        if (bouquetImage3 != null) bouquetImage3.color = Color.white;
-        isSkill3Unlocked = true;
+        PlayerPrefs.SetInt("HasBouquet3", 1);
+        PlayerPrefs.Save();
+        RefreshBouquetUI();
         Debug.Log("부케 3호 도감 해금 및 스킬3 활성화 완료!");
     }
 
+  
+
     private void HandleSkillInputs()
     {
-        // 1번 숫자키를 눌렀을 때
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            // 스킬이 해금된 상태일 때만 작동!
             if (isSkill1Unlocked)
             {
-                UseBouquetSkill(1);
+                Debug.Log("💐 [부케 1번 스킬 발동!] 주변의 벌들을 모두 쫓아냅니다!");
             }
             else
             {
-                Debug.Log("아직 1번 부케 스킬이 해금되지 않았습니다!");
+                Debug.Log("아직 1번 부케 스킬이 해금되지 않았습니다! (스테이지 1에서는 사용 불가)");
             }
         }
     }

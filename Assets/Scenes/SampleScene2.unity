@@ -180355,6 +180355,61 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Flower
   flowerType: 3
   flowerTypes: Nemophila
+--- !u!1 &1251538792
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1251538794}
+  - component: {fileID: 1251538793}
+  m_Layer: 0
+  m_Name: BookManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1251538793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251538792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a23f1f6f054889b449691fa9b0515ef9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BookManager
+  bookPanel: {fileID: 86029514}
+  player: {fileID: 1954643177}
+  bouquetImage1: {fileID: 1143408525}
+  bouquetImage2: {fileID: 1093386728}
+  bouquetImage3: {fileID: 1572781009}
+  hasBouquet1: 0
+  hasBouquet2: 0
+  hasBouquet3: 0
+  isSkill1Unlocked: 1
+  isSkill2Unlocked: 0
+  isSkill3Unlocked: 0
+--- !u!4 &1251538794
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251538792}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.88309, y: -3.3298, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1359405481
 GameObject:
   m_ObjectHideFlags: 0
@@ -183336,3 +183391,4 @@ SceneRoots:
   - {fileID: 745966641}
   - {fileID: 695365832}
   - {fileID: 1870210989}
+  - {fileID: 1251538794}

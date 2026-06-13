@@ -3953,7 +3953,7 @@ MonoBehaviour:
   hasBouquet3: 0
   isSkill1Unlocked: 0
   isSkill2Unlocked: 0
-  isSkill3Unlocked: 0
+  isSkill3Unlocked: 1
 --- !u!1 &969010513
 GameObject:
   m_ObjectHideFlags: 0
@@ -171922,7 +171922,7 @@ GameObject:
   - component: {fileID: 1455967970}
   m_Layer: 0
   m_Name: Bouquet1_0
-  m_TagString: Untagged
+  m_TagString: Bouquet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
