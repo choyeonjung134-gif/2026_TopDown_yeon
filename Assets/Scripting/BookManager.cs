@@ -20,6 +20,13 @@ public class BookManager : MonoBehaviour
     [HideInInspector] public bool hasBouquet2 = false; // 벌 -2
     [HideInInspector] public bool hasBouquet3 = false; // 영구 속도 업
 
+    // 스킬이 해금되었는지 기억할 비밀 장부 (true가 되면 스킬 사용 가능!)
+    [Header("스킬 해금 여부 상태")]
+    public bool isSkill1Unlocked = false;
+    public bool isSkill2Unlocked = false;
+    public bool isSkill3Unlocked = false;
+
+    public static BookManager Instance { get; private set; }
 
     void Start()
     {
@@ -32,6 +39,26 @@ public class BookManager : MonoBehaviour
     // ==========================================
 
     // 도감 열기 버튼에 연결할 함수
+
+    private void Awake()
+    {
+        // 씬이 전환되어도 BookManager가 새로 생성되어 데이터가 날아가는 것을 방지합니다.
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // ★ 핵심: 다음 스테이지로 가도 이 오브젝트는 살아남음!
+        }
+        else
+        {
+            Destroy(gameObject); // 이미 존재한다면 중복 생성을 막기 위해 파괴
+        }
+    }
+    void Update()
+    {
+        // 💡 매 프레임마다 플레이어가 숫자키를 누르는지 감시합니다!
+        HandleSkillInputs();
+    }
+
     public void OpenBook()
     {
         if (bookPanel != null)
@@ -60,66 +87,65 @@ public class BookManager : MonoBehaviour
     // 꽃다발을 조합하거나 획득했을 때 이 함수들을 호출해 주면 됩니다!
 
     // 1번 꽃다발 : 목숨 영구 +1 (최대 체력 5 -> 6)
-    public void UnlockBouquet1()
-    {
-        if (hasBouquet1) return; // 이미 해금했다면 패스
-        hasBouquet1 = true;
 
-        if (bouquetImage1 != null)
-        {
-            bouquetImage1.color = Color.white; // 원래 색상으로 복구!
-            Debug.Log("부케 1호 도감 해금 완료!");
-        }
-
-        player.maxHp = 6;       // 병아리의 최대 체력을 6으로 늘리고
-        player.currentHp++;     // 현재 체력도 1 보너스로 채워줍니다!
-        Debug.Log(" 1번 꽃다발 해금! 최대 목숨이 6으로 늘어났습니다.");
-    }
 
     // 2번 꽃다발 : 벌 2마리 줄이기
+
+    private void UseBouquetSkill(int skillNumber)
+    {
+        PlayerController player = FindObjectOfType<PlayerController>();
+        if (player == null) return;
+
+        if (skillNumber == 1)
+        {
+            Debug.Log("💐 [부케 1번 스킬 발동!] 오리의 이동 속도가 3초간 빨라집니다!");
+        }
+        else if (skillNumber == 2)
+        {
+            Debug.Log("🛡️ [부케 2번 스킬 발동!] 무적 보호막 생성!");
+        }
+        else if (skillNumber == 3)
+        {
+            Debug.Log("⚡ [부케 3번 스킬 발동!] 주변의 벌들을 모두 쫓아냅니다!");
+        }
+    }
+
+    // 기존의 중복되었던 1~3번 해금 함수들도 깔끔하게 딱 한 번만 아래처럼 새로 정의해 줍니다.
+    public void UnlockBouquet1()
+    {
+        if (bouquetImage1 != null) bouquetImage1.color = Color.white;
+        isSkill1Unlocked = true;
+        Debug.Log("부케 1호 도감 해금 및 스킬1 활성화 완료!");
+    }
+
     public void UnlockBouquet2()
     {
-        if (hasBouquet2) return;
-        hasBouquet2 = true;
-
-        // 맵에 있는 벌("Bee" 태그)을 찾아서 딱 2마리만 파괴합니다.
-        GameObject[] bees = GameObject.FindGameObjectsWithTag("Bee");
-        int deleteCount = Mathf.Min(2, bees.Length); // 벌이 2마리보다 적으면 있는 만큼만
-
-        if (bouquetImage2 != null)
-        {
-            bouquetImage2.color = Color.white;
-            Debug.Log("부케 2호 도감 해금 완료!");
-        }
-
-        for (int i = 0; i < deleteCount; i++)
-        {
-            Destroy(bees[i]);
-        }
-        Debug.Log(" 2번 꽃다발 해금! 벌 {deleteCount}마리를 맵에서 쫓아냈습니다.");
+        if (bouquetImage2 != null) bouquetImage2.color = Color.white;
+        isSkill2Unlocked = true;
+        Debug.Log("부케 2호 도감 해금 및 스킬2 활성화 완료!");
     }
 
-    // 3번 꽃다발 : 병아리 영구적으로 빨라지기
     public void UnlockBouquet3()
     {
-        if (hasBouquet3) return;
-        hasBouquet3 = true;
+        if (bouquetImage3 != null) bouquetImage3.color = Color.white;
+        isSkill3Unlocked = true;
+        Debug.Log("부케 3호 도감 해금 및 스킬3 활성화 완료!");
+    }
 
-        if (bouquetImage3 != null)
+    private void HandleSkillInputs()
+    {
+        // 1번 숫자키를 눌렀을 때
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            bouquetImage3.color = Color.white;
-            Debug.Log("부케 3호 도감 해금 완료!");
-        }
-        Debug.Log("라일락 및 네모필라 도감 색상 복구 완료!");
-
-        player.moveSpeed += 1.5f;
-
-        // originalSpeed 에러를 우회하기 위해 컴포넌트를 강제로 직접 찾아와서 수정합니다!
-        if (player.TryGetComponent(out PlayerController realPlayer))
-        {
-            realPlayer.moveSpeed = player.moveSpeed;
-            // 만약 원래 쓰려던 변수가 originalSpeed가 맞다면 아래 주석(//)을 지우고 사용하세요!
-            // realPlayer.originalSpeed += 1.5f;
+            // 스킬이 해금된 상태일 때만 작동!
+            if (isSkill1Unlocked)
+            {
+                UseBouquetSkill(1);
+            }
+            else
+            {
+                Debug.Log("아직 1번 부케 스킬이 해금되지 않았습니다!");
+            }
         }
     }
-    }
+}

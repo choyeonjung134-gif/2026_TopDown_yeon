@@ -257,13 +257,15 @@ public class PlayerController : MonoBehaviour
     // 257번째 줄부터 270번째 줄까지 이 코드로 통째로 바꾸세요!
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // 1. 벌("Bee") 태그를 가진 물체와 부딪혔을 때만 작동!
         if (other.CompareTag("Bee"))
         {
             Debug.Log("[트리거 감지] 벌이 병아리 몸을 통과함!");
             TakeDamage();
+        }
 
-            // ★ 매개변수 이름을 other로 맞춰서 벌에 맞았을 때만 빨갛게 만듭니다!
+        // 💡 원래 collision.CompareTag 였던 부분을 other.CompareTag 로 수정합니다!
+        if (other.CompareTag("Bee"))
+        {
             StartCoroutine(HitColorRoutine());
         }
     }
