@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
@@ -294,6 +295,25 @@ public class PlayerController : MonoBehaviour
                     else if (bouquet.bouquetNumber == 2) BookManager.Instance.UnlockBouquet2();
                     else if (bouquet.bouquetNumber == 3) BookManager.Instance.UnlockBouquet3();
                 }
+            }
+
+            // 1. 현재 활성화된 씬의 정보를 가져옵니다.
+            Scene currentScene = SceneManager.GetActiveScene();
+
+            // 2. [핵심] 현재 씬의 이름이 '마지막 스테이지'인지 확인합니다.
+            // ❗ 'Stage4' 부분을 본인의 스테이지 4 씬 이름과 똑같이 맞춰주세요.
+            if (currentScene.name == "Stage4")
+            {
+                Debug.Log("💐 마지막 꽃다발 획득! 타이틀 화면으로 돌아갑니다.");
+
+                // 3. 타이틀 화면 씬을 로드합니다.
+                // ❗ 'TitleScene' 부분을 본인의 타이틀 씬 이름과 똑같이 맞춰주세요.
+                SceneManager.LoadScene("Home");
+            }
+            else
+            {
+                // ... (스테이지 1, 2, 3일 때 도감을 켜거나 다음 스테이지로 가는 기존 코드) ...
+                // 예: other.GetComponent<BouquetObject>().OnPickUp();
             }
 
             // 아이템 오브젝트 파괴 (스테이지 이동은 BouquetObject 내부 연출이 처리)
