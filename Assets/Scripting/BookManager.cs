@@ -68,6 +68,17 @@ public class BookManager : MonoBehaviour
             Time.timeScale = 0f;       // ⭐ [치트키] 유니티의 시간을 0으로 만들어서 게임을 완전히 멈춥니다!
             Debug.Log("도감을 열었습니다. 게임 일시정지!");
         }
+      
+    }
+
+    public void OnBookButtonClick()
+    {
+        // 💡 싱글톤 Instance를 활용하면 에디터에서 드래그 안 해도 알아서 찾아갑니다!
+        if (BookManager.Instance != null)
+        {
+            // 도감 창을 열거나 닫는 함수 호출 (예시 이름이 OpenBook일 경우)
+            // BookManager.Instance.OpenBook(); 
+        }
     }
 
     // 도감 닫기 버튼에 연결할 함수

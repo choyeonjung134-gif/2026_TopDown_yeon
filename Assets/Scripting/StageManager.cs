@@ -67,7 +67,10 @@ public class StageManager : MonoBehaviour
             {
                 bouquetObject.SetActive(true); // 아까 만든 꽃다발 출현!
             }
+
         }
+
+
         // 꽃다발에 닿아서 다음 씬으로 넘어가기 바로 직전에 이 코드가 실행되어야 합니다!
         if (BookManager.Instance != null)
         {
@@ -77,5 +80,26 @@ public class StageManager : MonoBehaviour
 
         // 그 이후에 다음 씬으로 넘어가는 코드 실행
         // SceneManager.LoadScene("Stage2");
+    }
+    // StageManager.cs 파일 내부 맨 아래 (71번째 줄 괄호 닫히기 직전)에 추가
+    public void OnBookButtonClick()
+    {
+        // 1. 현재 Stage2 씬의 Canvas 안에 살아있는 "Book" 패널을 직접 찾습니다.
+        // (하이어라키에 있는 'Book' 오브젝트의 정확한 이름을 큰따옴표 안에 적어주셔야 합니다!)
+        GameObject localBookPanel = GameObject.Find("Canvas").transform.Find("Book")?.gameObject;
+
+        if (localBookPanel != null)
+        {
+            // 2. 만약 꺼져있다면 도감 패널을 켭니다!
+            localBookPanel.SetActive(true);
+
+            // 3. 도감이 열렸으므로 게임의 시간을 일시정지 상태로 만듭니다.
+            Time.timeScale = 0f;
+            Debug.Log(" [StageManager] 현재 스테이지의 도감 패널을 원격으로 열었습니다! 시간 정지.");
+        }
+        else
+        {
+            Debug.LogError(" Canvas 밑에 있는 'Book' 오브젝트를 찾을 수 없습니다. 이름을 확인해 주세요!");
+        }
     }
 }
