@@ -152,9 +152,14 @@ public class PlayerController : MonoBehaviour
         // 색 바꾸기
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
-        // 🦆 오리가 부활하거나 스테이지가 다시 시작될 때 색상을 강제로 원래대로(흰색) 리셋!
-        if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null) spriteRenderer.color = Color.white;
+        // 1. 🦆 부활하거나 스테이지가 다시 로드될 때 색상을 강제로 원래대로(흰색) 리셋!
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = Color.white;
+        }
+        maxHp = 5; 
+
     }
 
 
