@@ -68,5 +68,14 @@ public class StageManager : MonoBehaviour
                 bouquetObject.SetActive(true); // 아까 만든 꽃다발 출현!
             }
         }
+        // 꽃다발에 닿아서 다음 씬으로 넘어가기 바로 직전에 이 코드가 실행되어야 합니다!
+        if (BookManager.Instance != null)
+        {
+            // 1스테이지라면 1번 부케 해금, 2스테이지라면 2번 부케 해금!
+            BookManager.Instance.UnlockBouquet1();
+        }
+
+        // 그 이후에 다음 씬으로 넘어가는 코드 실행
+        // SceneManager.LoadScene("Stage2");
     }
 }

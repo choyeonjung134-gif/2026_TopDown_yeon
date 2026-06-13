@@ -3090,7 +3090,7 @@ MonoBehaviour:
   dandelionText: {fileID: 43659250}
   lilacText: {fileID: 1870164640}
   nemophilaText: {fileID: 545911807}
-  bouquetObject: {fileID: 0}
+  bouquetObject: {fileID: 1870210985}
 --- !u!4 &695365832
 Transform:
   m_ObjectHideFlags: 0
@@ -3899,58 +3899,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.38, y: 0.29}
   m_EdgeRadius: 0
---- !u!1 &917674400
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 917674401}
-  - component: {fileID: 917674402}
-  m_Layer: 0
-  m_Name: BookManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &917674401
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 917674400}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1863.0001}
-  m_LocalScale: {x: 207.00002, y: 207.00002, z: 207.00002}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1463804740}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &917674402
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 917674400}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a23f1f6f054889b449691fa9b0515ef9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BookManager
-  bookPanel: {fileID: 86029514}
-  player: {fileID: 1954643177}
-  bouquetImage1: {fileID: 1143408525}
-  bouquetImage2: {fileID: 1093386728}
-  bouquetImage3: {fileID: 1572781009}
-  hasBouquet1: 0
-  hasBouquet2: 0
-  hasBouquet3: 0
 --- !u!1 &969010513
 GameObject:
   m_ObjectHideFlags: 0
@@ -179823,7 +179771,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 917674402}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: BookManager, Assembly-CSharp
         m_MethodName: CloseBook
         m_Mode: 1
@@ -181111,7 +181059,6 @@ RectTransform:
   - {fileID: 39976003}
   - {fileID: 86029515}
   - {fileID: 1975402634}
-  - {fileID: 917674401}
   - {fileID: 181069962}
   - {fileID: 43659249}
   - {fileID: 1870164639}
@@ -182630,19 +182577,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1975402636}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 917674402}
-        m_TargetAssemblyTypeName: BookManager, Assembly-CSharp
-        m_MethodName: OpenBook
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1975402636
 MonoBehaviour:
   m_ObjectHideFlags: 0

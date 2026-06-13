@@ -30,8 +30,9 @@ public class BookManager : MonoBehaviour
 
     void Start()
     {
-        // 게임 시작할 때는 도감 창을 확실하게 닫아둡니다.
+        // 💡 게임 시작 시 도감 패널을 닫고, 게임 시간을 정상(1배속)으로 켭니다!
         if (bookPanel != null) bookPanel.SetActive(false);
+        Time.timeScale = 1f; // ★ 이 줄을 꼭 추가해 주세요!
     }
 
     // ==========================================
