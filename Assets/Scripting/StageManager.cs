@@ -1,36 +1,36 @@
-using UnityEngine;
-using TMPro; // UI ÅØ½ºÆ®(TextMeshPro)¸¦ Á¦¾îÇÏ±â À§ÇØ ²À ÇÊ¿äÇÕ´Ï´Ù!
+ï»¿using UnityEngine;
+using TMPro; // UI í…ìŠ¤íŠ¸(TextMeshPro)ë¥¼ ì œì–´í•˜ê¸° ìœ„í•´ ê¼­ í•„ìš”í•©ë‹ˆë‹¤!
 
 public class StageManager : MonoBehaviour
 {
-    [Header("°¢ ²ÉÀÇ ÇöÀç È¹µæ °³¼ö")]
+    [Header("ê° ê½ƒì˜ í˜„ì¬ íšë“ ê°œìˆ˜")]
     public int daisyCount = 0;
     public int dandelionCount = 0;
     public int lilacCount = 0;
     public int nemophilaCount = 0;
 
-    [Header("Å¬¸®¾î¿¡ ÇÊ¿äÇÑ ¸ñÇ¥ °³¼ö")]
-    public int targetCount = 5; // ¿¹½Ã·Î 5°³¾¿ ¸ğÀ¸¸é Å¬¸®¾îµÇ°Ô ¼³Á¤
+    [Header("í´ë¦¬ì–´ì— í•„ìš”í•œ ëª©í‘œ ê°œìˆ˜")]
+    public int targetCount = 5; // ì˜ˆì‹œë¡œ 5ê°œì”© ëª¨ìœ¼ë©´ í´ë¦¬ì–´ë˜ê²Œ ì„¤ì •
 
-    [Header("È­¸é ¿ŞÂÊ ³¡¿¡ ¹èÄ¡ÇÒ TextMeshPro ÅØ½ºÆ®µé")]
+    [Header("í™”ë©´ ì™¼ìª½ ëì— ë°°ì¹˜í•  TextMeshPro í…ìŠ¤íŠ¸ë“¤")]
     public TextMeshProUGUI daisyText;
     public TextMeshProUGUI dandelionText;
     public TextMeshProUGUI lilacText;
     public TextMeshProUGUI nemophilaText;
 
-    [Header("´Ù ¸ğÀ¸¸é ³ªÅ¸³¯ ²É´Ù¹ß ¿ÀºêÁ§Æ®")]
+    [Header("ë‹¤ ëª¨ìœ¼ë©´ ë‚˜íƒ€ë‚  ê½ƒë‹¤ë°œ ì˜¤ë¸Œì íŠ¸")]
     public GameObject bouquetObject;
 
     void Start()
     {
-        // °ÔÀÓ ½ÃÀÛ ½Ã ÅØ½ºÆ® UI¸¦ 0°³ »óÅÂ·Î ÃÊ±âÈ­
+        // ê²Œì„ ì‹œì‘ ì‹œ í…ìŠ¤íŠ¸ UIë¥¼ 0ê°œ ìƒíƒœë¡œ ì´ˆê¸°í™”
         UpdateFlowerUI();
 
-        // ½ÃÀÛÇÒ ¶§´Â ²É´Ù¹ßÀ» Àá½Ã ²¨µÓ´Ï´Ù.
+        // ì‹œì‘í•  ë•ŒëŠ” ê½ƒë‹¤ë°œì„ ì ì‹œ êº¼ë‘¡ë‹ˆë‹¤.
         if (bouquetObject != null) bouquetObject.SetActive(false);
     }
 
-    // ²ÉÀ» ¸Ô¾úÀ» ¶§ ¿ÜºÎ ½ºÅ©¸³Æ®(Flower µî)¿¡¼­ È£ÃâÇÒ ÇÔ¼ö
+    // ê½ƒì„ ë¨¹ì—ˆì„ ë•Œ ì™¸ë¶€ ìŠ¤í¬ë¦½íŠ¸(Flower ë“±)ì—ì„œ í˜¸ì¶œí•  í•¨ìˆ˜
     public void AddFlower(string flowerType)
     {
         if (flowerType == "Daisy") daisyCount++;
@@ -38,14 +38,14 @@ public class StageManager : MonoBehaviour
         else if (flowerType == "Lilac") lilacCount++;
         else if (flowerType == "Nemophila") nemophilaCount++;
 
-        // ¼ıÀÚ°¡ ¿Ã¶úÀ¸´Ï UI ±ÛÀÚµµ »õ·Î°íÄ§
+        // ìˆ«ìê°€ ì˜¬ëìœ¼ë‹ˆ UI ê¸€ìë„ ìƒˆë¡œê³ ì¹¨
         UpdateFlowerUI();
 
-        // ¸ğµç Á¾·ùÀÇ ²ÉÀ» ¸ñÇ¥ °³¼ö¸¸Å­ ´Ù ¸ğ¾Ò´ÂÁö Ã¼Å©
+        // ëª¨ë“  ì¢…ë¥˜ì˜ ê½ƒì„ ëª©í‘œ ê°œìˆ˜ë§Œí¼ ë‹¤ ëª¨ì•˜ëŠ”ì§€ ì²´í¬
         CheckStageClear();
     }
 
-    // È­¸éÀÇ ±ÛÀÚµéÀ» ¿¹»Ú°Ô ¾÷µ¥ÀÌÆ®ÇØ ÁÖ´Â ÇÔ¼ö
+    // í™”ë©´ì˜ ê¸€ìë“¤ì„ ì˜ˆì˜ê²Œ ì—…ë°ì´íŠ¸í•´ ì£¼ëŠ” í•¨ìˆ˜
     void UpdateFlowerUI()
     {
         if (daisyText != null) daisyText.text = $"Daisy : {daisyCount} / {targetCount}";
@@ -54,7 +54,7 @@ public class StageManager : MonoBehaviour
         if (nemophilaText != null) nemophilaText.text = $"Nemophila : {nemophilaCount} / {targetCount}";
     }
 
-    // ²ÉÀ» ´Ù ¸ğ¾Ò´ÂÁö °Ë»çÇÏ´Â ÇÔ¼ö
+    // ê½ƒì„ ë‹¤ ëª¨ì•˜ëŠ”ì§€ ê²€ì‚¬í•˜ëŠ” í•¨ìˆ˜
     void CheckStageClear()
     {
         if (daisyCount >= targetCount &&
@@ -62,44 +62,73 @@ public class StageManager : MonoBehaviour
             lilacCount >= targetCount &&
             nemophilaCount >= targetCount)
         {
-            Debug.Log("¸ğµç ²ÉÀ» ¼öÁıÇß½À´Ï´Ù! Áß¾Ó¿¡ ²É´Ù¹ßÀÌ ³ªÅ¸³³´Ï´Ù.");
+            Debug.Log("ëª¨ë“  ê½ƒì„ ìˆ˜ì§‘í–ˆìŠµë‹ˆë‹¤! ì¤‘ì•™ì— ê½ƒë‹¤ë°œì´ ë‚˜íƒ€ë‚©ë‹ˆë‹¤.");
             if (bouquetObject != null)
             {
-                bouquetObject.SetActive(true); // ¾Æ±î ¸¸µç ²É´Ù¹ß ÃâÇö!
+                bouquetObject.SetActive(true); // ì•„ê¹Œ ë§Œë“  ê½ƒë‹¤ë°œ ì¶œí˜„!
             }
 
         }
 
 
-        // ²É´Ù¹ß¿¡ ´ê¾Æ¼­ ´ÙÀ½ ¾ÀÀ¸·Î ³Ñ¾î°¡±â ¹Ù·Î Á÷Àü¿¡ ÀÌ ÄÚµå°¡ ½ÇÇàµÇ¾î¾ß ÇÕ´Ï´Ù!
+        // ê½ƒë‹¤ë°œì— ë‹¿ì•„ì„œ ë‹¤ìŒ ì”¬ìœ¼ë¡œ ë„˜ì–´ê°€ê¸° ë°”ë¡œ ì§ì „ì— ì´ ì½”ë“œê°€ ì‹¤í–‰ë˜ì–´ì•¼ í•©ë‹ˆë‹¤!
         if (BookManager.Instance != null)
         {
-            // 1½ºÅ×ÀÌÁö¶ó¸é 1¹ø ºÎÄÉ ÇØ±İ, 2½ºÅ×ÀÌÁö¶ó¸é 2¹ø ºÎÄÉ ÇØ±İ!
+            // 1ìŠ¤í…Œì´ì§€ë¼ë©´ 1ë²ˆ ë¶€ì¼€ í•´ê¸ˆ, 2ìŠ¤í…Œì´ì§€ë¼ë©´ 2ë²ˆ ë¶€ì¼€ í•´ê¸ˆ!
             BookManager.Instance.UnlockBouquet1();
         }
 
-        // ±× ÀÌÈÄ¿¡ ´ÙÀ½ ¾ÀÀ¸·Î ³Ñ¾î°¡´Â ÄÚµå ½ÇÇà
+        // ê·¸ ì´í›„ì— ë‹¤ìŒ ì”¬ìœ¼ë¡œ ë„˜ì–´ê°€ëŠ” ì½”ë“œ ì‹¤í–‰
         // SceneManager.LoadScene("Stage2");
     }
-    // StageManager.cs ÆÄÀÏ ³»ºÎ ¸Ç ¾Æ·¡ (71¹øÂ° ÁÙ °ıÈ£ ´İÈ÷±â Á÷Àü)¿¡ Ãß°¡
+    // StageManager.cs íŒŒì¼ ë‚´ë¶€ ë§¨ ì•„ë˜ (71ë²ˆì§¸ ì¤„ ê´„í˜¸ ë‹«íˆê¸° ì§ì „)ì— ì¶”ê°€
     public void OnBookButtonClick()
     {
-        // 1. ÇöÀç Stage2 ¾ÀÀÇ Canvas ¾È¿¡ »ì¾ÆÀÖ´Â "Book" ÆĞ³ÎÀ» Á÷Á¢ Ã£½À´Ï´Ù.
-        // (ÇÏÀÌ¾î¶óÅ°¿¡ ÀÖ´Â 'Book' ¿ÀºêÁ§Æ®ÀÇ Á¤È®ÇÑ ÀÌ¸§À» Å«µû¿ÈÇ¥ ¾È¿¡ Àû¾îÁÖ¼Å¾ß ÇÕ´Ï´Ù!)
-        GameObject localBookPanel = GameObject.Find("Canvas").transform.Find("Book")?.gameObject;
+        // 1. í˜„ì¬ ì”¬ì˜ Canvas ì•ˆì— ì‚´ì•„ìˆëŠ” "Book" íŒ¨ë„ì„ ì°¾ìŠµë‹ˆë‹¤.
+        Transform canvasTransform = GameObject.Find("Canvas")?.transform;
+        GameObject localBookPanel = canvasTransform?.Find("Book")?.gameObject;
 
         if (localBookPanel != null)
         {
-            // 2. ¸¸¾à ²¨Á®ÀÖ´Ù¸é µµ°¨ ÆĞ³ÎÀ» ÄÕ´Ï´Ù!
+            // 2. ë„ê° íŒ¨ë„ì„ í™œì„±í™”í•©ë‹ˆë‹¤.
             localBookPanel.SetActive(true);
+            Time.timeScale = 0f; // ê²Œì„ ì¼ì‹œì •ì§€
 
-            // 3. µµ°¨ÀÌ ¿­·ÈÀ¸¹Ç·Î °ÔÀÓÀÇ ½Ã°£À» ÀÏ½ÃÁ¤Áö »óÅÂ·Î ¸¸µì´Ï´Ù.
-            Time.timeScale = 0f;
-            Debug.Log(" [StageManager] ÇöÀç ½ºÅ×ÀÌÁöÀÇ µµ°¨ ÆĞ³ÎÀ» ¿ø°İÀ¸·Î ¿­¾ú½À´Ï´Ù! ½Ã°£ Á¤Áö.");
-        }
-        else
-        {
-            Debug.LogError(" Canvas ¹Ø¿¡ ÀÖ´Â 'Book' ¿ÀºêÁ§Æ®¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù. ÀÌ¸§À» È®ÀÎÇØ ÁÖ¼¼¿ä!");
+            // 3. ë„ê° ì•ˆì— ìˆëŠ” ê½ƒ ì´ë¯¸ì§€ë“¤ì„ ì‹¤ì‹œê°„ìœ¼ë¡œ ì°¾ì•„ì„œ ìƒ‰ìƒì„ ë™ê¸°í™”í•©ë‹ˆë‹¤.
+            Transform bookTransform = localBookPanel.transform;
+
+            // âš ï¸ [ì¤‘ìš”] í•˜ì´ì–´ë¼í‚¤ ì°½ ë‚´ë¶€ Canvas -> Book ìì‹ì— ìˆëŠ”ì‹¤ì œ ê½ƒ ì´ë¯¸ì§€ ì˜¤ë¸Œì íŠ¸ ì´ë¦„ì„ ì •í™•íˆ ì ì–´ì£¼ì„¸ìš”!
+            // ì•„ë˜ ì´ë¦„ë“¤ì€ ì˜ˆì‹œì…ë‹ˆë‹¤. í•˜ì´ì–´ë¼í‚¤ì— 'DaisyText' ë“±ì´ ë³´ì˜€ëŠ”ë°, ë§Œì•½ ì´ë¯¸ì§€ ì˜¤ë¸Œì íŠ¸ ì´ë¦„ì´ ë‹¤ë¥´ë©´ ë˜‘ê°™ì´ ë§ì¶°ì£¼ì„¸ìš”.
+            UnityEngine.UI.Image imgDaisy = bookTransform.Find("Daisy_0")?.GetComponent<UnityEngine.UI.Image>();
+            UnityEngine.UI.Image imgDandelion = bookTransform.Find("Dandelion_0")?.GetComponent<UnityEngine.UI.Image>();
+            UnityEngine.UI.Image imgLilac = bookTransform.Find("Lilac_0")?.GetComponent<UnityEngine.UI.Image>();
+            UnityEngine.UI.Image imgNemophila = bookTransform.Find("Nemophila_0")?.GetComponent<UnityEngine.UI.Image>();
+
+            // 4. í”Œë ˆì´ì–´ ì»¨íŠ¸ë¡¤ëŸ¬ë¥¼ ê°€ì ¸ì™€ í˜„ì¬ ë¨¹ì€ ê½ƒ ê°œìˆ˜ë¥¼ íŒŒì•…í•˜ê³  íšŒìƒ‰/í°ìƒ‰ ì²˜ë¦¬ë¥¼ í•´ì¤ë‹ˆë‹¤.
+            PlayerController player = FindFirstObjectByType<PlayerController>();
+            if (player != null)
+            {
+                // player ë‚´ë¶€ì˜ ê½ƒ ë³€ìˆ˜ ì´ë¦„(ì˜ˆ: daisyCount ë“±)ì— ë§ì¶° ì—°ë™í•©ë‹ˆë‹¤. ë³€ìˆ˜ëª…ì´ ë‹¤ë¥´ë©´ ìˆ˜ì •í•´ ì£¼ì„¸ìš”!
+                if (imgDaisy != null) imgDaisy.color = player.daisyCount > 0 ? Color.white : new Color(0.3f, 0.3f, 0.3f, 1f);
+                if (imgDandelion != null) imgDandelion.color = player.dandelionCount > 0 ? Color.white : new Color(0.3f, 0.3f, 0.3f, 1f);
+                if (imgLilac != null) imgLilac.color = player.lilacCount > 0 ? Color.white : new Color(0.3f, 0.3f, 0.3f, 1f);
+                if (imgNemophila != null) imgNemophila.color = player.nemophilaCount > 0 ? Color.white : new Color(0.3f, 0.3f, 0.3f, 1f);
+            }
+
+            Debug.Log("ğŸ¯ [StageManager] í˜„ì¬ ìŠ¤í…Œì´ì§€ì˜ ë„ê°ì„ ì—´ê³  ê½ƒ ìƒ‰ìƒì„ ì—…ë°ì´íŠ¸í–ˆìŠµë‹ˆë‹¤!");
         }
     }
+
+    public void OnBookCloseButtonClick()
+    {
+        // ë„ê° íŒ¨ë„ì„ ì°¾ì•„ì„œ ë‹«ê³  ì‹œê°„ì„ ì›€ì§ì…ë‹ˆë‹¤.
+        GameObject localBookPanel = GameObject.Find("Canvas")?.transform.Find("Book")?.gameObject;
+        if (localBookPanel != null)
+        {
+            localBookPanel.SetActive(false);
+            Time.timeScale = 1f; // ê²Œì„ ë‹¤ì‹œ ì¬ìƒ
+            Debug.Log("ğŸ¯ [StageManager] ë„ê°ì„ ë‹«ê³  ê²Œì„ì„ ì¬ê°œí•©ë‹ˆë‹¤.");
+        }
+    }
+
 }

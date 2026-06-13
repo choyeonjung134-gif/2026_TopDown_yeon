@@ -1,54 +1,63 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class Flower : MonoBehaviour
 {
-    // À¯´ÏÆ¼ ÀÎ½ºÆåÅÍ¿¡¼­ ²É Á¾·ù¸¦ °í¸¦ ¼ö ÀÖ°Ô ¸¸µì´Ï´Ù.
+    // ìœ ë‹ˆí‹° ì¸ìŠ¤í™í„°ì—ì„œ ê½ƒ ì¢…ë¥˜ë¥¼ ê³ ë¥¼ ìˆ˜ ìˆê²Œ ë§Œë“­ë‹ˆë‹¤.
     public enum FlowerType { Daisy, Lilac, Dandelion, Nemophila }
-    [Header("²É Á¾·ù ¼±ÅÃ")]
+    [Header("ê½ƒ ì¢…ë¥˜ ì„ íƒ")]
     public FlowerType flowerType;
 
-    // [Header]¸¦ ½áÁÖ¸é À¯´ÏÆ¼ ÀÎ½ºÆåÅÍ Ã¢¿¡¼­ ±ÛÀÚ¸¦ Á÷Á¢ Å¸ÀÌÇÎÇÒ ¼ö ÀÖ°Ô µË´Ï´Ù!
-    [Header("ÀÌ ²ÉÀÇ Á¾·ù¸¦ Àû¾îÁÖ¼¼¿ä (Daisy, Dandelion, Lilac, Nemophila)")]
-    public string flowerTypes = "Daisy"; // ±âº»°ªÀº Daisy·Î ¼³Á¤
+    // [Header]ë¥¼ ì¨ì£¼ë©´ ìœ ë‹ˆí‹° ì¸ìŠ¤í™í„° ì°½ì—ì„œ ê¸€ìë¥¼ ì§ì ‘ íƒ€ì´í•‘í•  ìˆ˜ ìˆê²Œ ë©ë‹ˆë‹¤!
+    [Header("ì´ ê½ƒì˜ ì¢…ë¥˜ë¥¼ ì ì–´ì£¼ì„¸ìš” (Daisy, Dandelion, Lilac, Nemophila)")]
+    public string flowerTypes = "Daisy"; // ê¸°ë³¸ê°’ì€ Daisyë¡œ ì„¤ì •
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // ºÎµúÈù ¿ÀºêÁ§Æ®°¡ ÇÃ·¹ÀÌ¾îÀÎÁö È®ÀÎ (Tag°¡ Player¿©¾ß ÇÕ´Ï´Ù)
+        // ë¶€ë”ªíŒ ì˜¤ë¸Œì íŠ¸ê°€ í”Œë ˆì´ì–´ì¸ì§€ í™•ì¸ (Tagê°€ Playerì—¬ì•¼ í•©ë‹ˆë‹¤)
         if (other.CompareTag("Player"))
         {
-            // ÇÃ·¹ÀÌ¾îÀÇ PlayerController ÄÄÆ÷³ÍÆ®¸¦ °¡Á®¿É´Ï´Ù.
+            // í”Œë ˆì´ì–´ì˜ PlayerController ì»´í¬ë„ŒíŠ¸ë¥¼ ê°€ì ¸ì˜µë‹ˆë‹¤.
             PlayerController player = other.GetComponent<PlayerController>();
 
             if (player != null)
             {
-                // ²É Á¾·ù¿¡ µû¶ó ÇÃ·¹ÀÌ¾î¿¡°Ô ´É·ÂÀ» ºÎ¿©ÇÕ´Ï´Ù.
+                // ê½ƒ ì¢…ë¥˜ì— ë”°ë¼ í”Œë ˆì´ì–´ì—ê²Œ ëŠ¥ë ¥ì„ ë¶€ì—¬í•©ë‹ˆë‹¤.
                 switch (flowerType)
                 {
                     case FlowerType.Daisy:
                         player.CollectDaisy();
+                        PlayerPrefs.SetInt("HasDaisy", 1); //  [ì¶”ê°€] ë°ì´ì§€ íšë“ ì €ì¥!
                         break;
+
                     case FlowerType.Lilac:
                         player.CollectLilac();
+                        PlayerPrefs.SetInt("HasLilac", 1);
                         break;
+
+
                     case FlowerType.Dandelion:
                         player.CollectDandelion();
+                        PlayerPrefs.SetInt("HasDandelion", 1);
                         break;
+
+
                     case FlowerType.Nemophila:
                         player.CollectNemophila();
+                        PlayerPrefs.SetInt("HasNemophila", 1);
                         break;
                 }
                 if (other.CompareTag("Player"))
                 {
-                    // 1. ¹æ±İ ¸¸µç StageManager¸¦ Ã£½À´Ï´Ù.
+                    // 1. ë°©ê¸ˆ ë§Œë“  StageManagerë¥¼ ì°¾ìŠµë‹ˆë‹¤.
                     StageManager stageManager = FindObjectOfType<StageManager>();
                     if (stageManager != null)
                     {
-                        // 2. ÀÌ ²É ¿ÀºêÁ§Æ®ÀÇ ÀÌ¸§ÀÌ³ª ÁöÁ¤µÈ ¹®ÀÚ¿­À» ³Ñ°ÜÁİ´Ï´Ù.
-                        // ÀÎ½ºÆåÅÍ¿¡¼­ °í¸¥ FlowerType º¯¼ö(Dandelion, Lilac µî)ÀÇ ÀÌ¸§À» ±×´ë·Î ¹®ÀÚ·Î ¹Ù²ã¼­ Àü´ŞÇÕ´Ï´Ù!
+                        // 2. ì´ ê½ƒ ì˜¤ë¸Œì íŠ¸ì˜ ì´ë¦„ì´ë‚˜ ì§€ì •ëœ ë¬¸ìì—´ì„ ë„˜ê²¨ì¤ë‹ˆë‹¤.
+                        // ì¸ìŠ¤í™í„°ì—ì„œ ê³ ë¥¸ FlowerType ë³€ìˆ˜(Dandelion, Lilac ë“±)ì˜ ì´ë¦„ì„ ê·¸ëŒ€ë¡œ ë¬¸ìë¡œ ë°”ê¿”ì„œ ì „ë‹¬í•©ë‹ˆë‹¤!
                         stageManager.AddFlower(flowerType.ToString());
                     }
 
-                    // 3. ¸Ô¾úÀ¸´Ï ²ÉÀº »ç¶óÁü
+                    // 3. ë¨¹ì—ˆìœ¼ë‹ˆ ê½ƒì€ ì‚¬ë¼ì§
                     Destroy(gameObject);
                 }
 

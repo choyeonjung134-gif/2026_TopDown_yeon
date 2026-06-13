@@ -65,11 +65,11 @@ public class BookManager : MonoBehaviour
         if (bookPanel != null)
         {
             bookPanel.SetActive(true); // 도감 화면 켜기
-            Time.timeScale = 0f;       // ⭐ [치트키] 유니티의 시간을 0으로 만들어서 게임을 완전히 멈춥니다!
-            Debug.Log("도감을 열었습니다. 게임 일시정지!");
+            Time.timeScale = 0f;       // 게임 일시정지
         }
-      
+       
     }
+
 
     public void OnBookButtonClick()
     {
@@ -160,4 +160,6 @@ public class BookManager : MonoBehaviour
             }
         }
     }
+
+
 }

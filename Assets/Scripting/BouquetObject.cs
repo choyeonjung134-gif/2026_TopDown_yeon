@@ -1,44 +1,57 @@
-using UnityEngine;
-using UnityEngine.SceneManagement; // ½ºÅ×ÀÌÁö ÀüÈ¯À» À§ÇØ ÇÊ¿äÇÕ´Ï´Ù!
+ï»¿using UnityEngine;
+using UnityEngine.SceneManagement; // ìŠ¤í…Œì´ì§€ ì „í™˜ì„ ìœ„í•´ í•„ìš”í•©ë‹ˆë‹¤!
 
 public class BouquetObject : MonoBehaviour
 {
-    [Header("ÇØ±İÇÒ ²É´Ù¹ß ¹øÈ£ (1, 2, 3 Áß ¼±ÅÃ)")]
+    [Header("í•´ê¸ˆí•  ê½ƒë‹¤ë°œ ë²ˆí˜¸ (1, 2, 3 ì¤‘ ì„ íƒ)")]
     public int bouquetNumber = 1;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // ÇÃ·¹ÀÌ¾î(¿À¸®)°¡ ²É´Ù¹ß¿¡ ´ê¾ÒÀ» ¶§¸¸ ÀÛµ¿
+        // í”Œë ˆì´ì–´(ì˜¤ë¦¬)ê°€ ê½ƒë‹¤ë°œì— ë‹¿ì•˜ì„ ë•Œë§Œ ì‘ë™
         if (other.CompareTag("Player"))
         {
-            // 1. °ÔÀÓ ¸Å´ÏÀú¸¦ Ã£¾Æ µµ°¨ ±â´ÉÀ» ÇØ±İÇÕ´Ï´Ù.
+            // 1. ê²Œì„ ë§¤ë‹ˆì €ë¥¼ ì°¾ì•„ ë„ê° ê¸°ëŠ¥ì„ í•´ê¸ˆí•©ë‹ˆë‹¤.
             BookManager bookManager = FindObjectOfType<BookManager>();
             if (bookManager != null)
             {
-                if (bouquetNumber == 1) bookManager.UnlockBouquet1();
-                else if (bouquetNumber == 2) bookManager.UnlockBouquet2();
-                else if (bouquetNumber == 3) bookManager.UnlockBouquet3();
+                bookManager.UnlockBouquet1();
+                PlayerPrefs.SetInt("HasBouquet1", 1); // ğŸ‘ˆ [í•µì‹¬] ì´ì œ ìŠ¤í…Œì´ì§€2ë¶€í„° ë„ê°ì—ì„œ ìœ ìƒ‰ìœ¼ë¡œ í™œì„±í™”ë©ë‹ˆë‹¤!
             }
 
-            Debug.Log("{bouquetNumber}¹ø ²É´Ù¹ß È¹µæ! ´ÙÀ½ ½ºÅ×ÀÌÁö·Î ÀÌµ¿ÇÕ´Ï´Ù.");
+            // ğŸ’ ìŠ¤í…Œì´ì§€ 2ë¥¼ ê¹¨ê³  ê½ƒë‹¤ë°œ 2ë²ˆì„ íšë“í–ˆì„ ë•Œ ì²˜ë¦¬
+            else if (bouquetNumber == 2)
+            {
+                bookManager.UnlockBouquet2();
+                PlayerPrefs.SetInt("HasBouquet2", 1);
+            }
+            // ğŸ’ ìŠ¤í…Œì´ì§€ 3ì„ ê¹¨ê³  ê½ƒë‹¤ë°œ 3ë²ˆì„ íšë“í–ˆì„ ë•Œ ì²˜ë¦¬
+            else if (bouquetNumber == 3)
+            {
+                bookManager.UnlockBouquet3();
+                PlayerPrefs.SetInt("HasBouquet3", 1);
+            }
+        }
 
-            // 2. ´ÙÀ½ ½ºÅ×ÀÌÁö(¾À)·Î ÀÌµ¿ÇÕ´Ï´Ù.
-            // ºôµå ¼¼ÆÃ¿¡ µî·ÏµÈ ÇöÀç ¾ÀÀÇ ´ÙÀ½ ÀÎµ¦½º ¾ÀÀ» ºÒ·¯¿É´Ï´Ù.
+            Debug.Log("{bouquetNumber}ë²ˆ ê½ƒë‹¤ë°œ íšë“! ë‹¤ìŒ ìŠ¤í…Œì´ì§€ë¡œ ì´ë™í•©ë‹ˆë‹¤.");
+
+            // 2. ë‹¤ìŒ ìŠ¤í…Œì´ì§€(ì”¬)ë¡œ ì´ë™í•©ë‹ˆë‹¤.
+            // ë¹Œë“œ ì„¸íŒ…ì— ë“±ë¡ëœ í˜„ì¬ ì”¬ì˜ ë‹¤ìŒ ì¸ë±ìŠ¤ ì”¬ì„ ë¶ˆëŸ¬ì˜µë‹ˆë‹¤.
             int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
 
-            // ¸¸¾à ´ÙÀ½ ¾ÀÀÌ ºôµå ¼¼ÆÃ¿¡ Á¸ÀçÇÑ´Ù¸é ÀüÈ¯
+            // ë§Œì•½ ë‹¤ìŒ ì”¬ì´ ë¹Œë“œ ì„¸íŒ…ì— ì¡´ì¬í•œë‹¤ë©´ ì „í™˜
             if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
             {
                 SceneManager.LoadScene(nextSceneIndex);
             }
             else
             {
-                Debug.Log("¸¶Áö¸· ½ºÅ×ÀÌÁöÀÔ´Ï´Ù! Ã³À½ ½ºÅ×ÀÌÁö·Î µ¹¾Æ°©´Ï´Ù.");
-                SceneManager.LoadScene(0); // È¤Àº ¿£µù Å©·¹µ÷ ¾À ÀÌ¸§ ÀÔ·Â
+                Debug.Log("ë§ˆì§€ë§‰ ìŠ¤í…Œì´ì§€ì…ë‹ˆë‹¤! ì²˜ìŒ ìŠ¤í…Œì´ì§€ë¡œ ëŒì•„ê°‘ë‹ˆë‹¤.");
+                SceneManager.LoadScene(0); // í˜¹ì€ ì—”ë”© í¬ë ˆë”§ ì”¬ ì´ë¦„ ì…ë ¥
             }
 
-            // 3. ¸ÔÀº ²É´Ù¹ß ¿ÀºêÁ§Æ®´Â ÆÄ±«
+            // 3. ë¨¹ì€ ê½ƒë‹¤ë°œ ì˜¤ë¸Œì íŠ¸ëŠ” íŒŒê´´
             Destroy(gameObject);
         }
-    }
+    
 }
